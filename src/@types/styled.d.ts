@@ -10,7 +10,7 @@ export type ThemeType = {
 
   'base-title': string
   'base-subtitle': string
-  'base-next': string
+  'base-text': string
   'base-label': string
   'base-hover': string
   'base-button': string

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const CardComponent = styled.div`
+export const CardContainer = styled.div`
   width: 16rem;
   height: 18.75rem;
 

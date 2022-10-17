@@ -1,9 +1,9 @@
 import { ShoppingCart } from 'phosphor-react'
-import { CardComponent } from './styles'
+import { CardContainer } from './styles'
 
 export function Card() {
   return (
-    <CardComponent>
+    <CardContainer>
       <img
         src="src/assets/images/copos_de_cafe/expresso-tradicional.svg"
         alt=""
@@ -14,6 +14,6 @@ export function Card() {
         R$ <span>9,90</span>
       </p>
       <ShoppingCart />
-    </CardComponent>
+    </CardContainer>
   )
 }
