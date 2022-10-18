@@ -62,7 +62,7 @@ export const HomeContainer = styled.main`
 
     justify-content: space-evenly;
     align-items: center;
-    row-gap: 2.5rem;
+    row-gap: 4rem;
     column-gap: 2rem;
 
     margin-top: 2rem;

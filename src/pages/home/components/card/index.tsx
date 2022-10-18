@@ -16,15 +16,20 @@ export function Card() {
 
       <p>O tradicional café feito com água quente e grãos moídos</p>
 
-      <form>
+      <div className="input-qtd">
         <label htmlFor="">
           R$ <span>9,90</span>
         </label>
-        <input type="number" placeholder="Qtd" />
+        <div className="qtd">
+          <span className="minus">-</span>
+          <span className="num">0</span>
+          <span className="plus">+</span>
+        </div>
+
         <button type="submit">
           <ShoppingCart weight="fill" />
         </button>
-      </form>
+      </div>
     </CardContainer>
   )
 }
