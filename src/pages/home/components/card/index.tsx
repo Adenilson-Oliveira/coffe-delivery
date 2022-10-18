@@ -1,4 +1,5 @@
 import { ShoppingCart } from 'phosphor-react'
+import { Counter } from '../../../../components/counter'
 import { CardContainer } from './styles'
 
 export function Card() {
@@ -17,14 +18,15 @@ export function Card() {
       <p>O tradicional café feito com água quente e grãos moídos</p>
 
       <div className="input-qtd">
-        <label htmlFor="">
+        <div className="price">
           R$ <span>9,90</span>
-        </label>
-        <div className="qtd">
+        </div>
+        {/* <div className="qtd">
           <span className="minus">-</span>
           <span className="num">0</span>
           <span className="plus">+</span>
-        </div>
+        </div> */}
+        <Counter />
 
         <button type="submit">
           <ShoppingCart weight="fill" />
