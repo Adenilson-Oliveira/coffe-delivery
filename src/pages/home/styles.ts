@@ -60,8 +60,12 @@ export const HomeContainer = styled.main`
     display: flex;
     flex-wrap: wrap;
 
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
+    row-gap: 2.5rem;
+    column-gap: 2rem;
+
+    margin-top: 2rem;
   }
 
   .icon {
