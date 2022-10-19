@@ -100,7 +100,7 @@ export const CheckoutContainer = styled.div`
     margin-top: 12px;
     border-radius: 6px;
 
-    .icon {
+    .icon-payment {
       color: ${(props) => props.theme.purple};
     }
   }
@@ -124,10 +124,53 @@ export const CheckoutContainer = styled.div`
       }
     }
 
-    .icon {
+    .icon-payment {
       display: flex;
       align-items: center;
       margin-right: 1rem;
     }
+  }
+`
+
+export const ResultContainer = styled.div`
+  .confirm-order {
+    padding: 2.5rem;
+    background-color: ${(props) => props.theme['base-card']};
+    border-top-right-radius: 44px;
+    border-bottom-left-radius: 44px;
+    border-top-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+
+  .confirm-order > button {
+    width: 100%;
+    font-size: 14px;
+    line-height: 1.6;
+    color: ${(props) => props.theme.white};
+    background-color: ${(props) => props.theme.yellow};
+    padding: 12px 0;
+    border: none;
+    border-radius: 6px;
+    transition: 0.1ms;
+
+    :hover {
+      background-color: ${(props) => props.theme['yellow-dark']};
+    }
+  }
+`
+
+export const Details = styled.div`
+  margin: 1.5rem 0;
+
+  ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+  }
+
+  ul > .total {
+    font-weight: bold;
+    font-size: 20px;
   }
 `

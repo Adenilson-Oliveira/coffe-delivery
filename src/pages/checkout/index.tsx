@@ -1,4 +1,4 @@
-import { CheckoutContainer } from './styles'
+import { CheckoutContainer, Details, ResultContainer } from './styles'
 import {
   Bank,
   CreditCard,
@@ -6,6 +6,7 @@ import {
   MapPinLine,
   Money,
 } from 'phosphor-react'
+import { ProductCheckout } from './components/ProductCheckout'
 
 export function Checkout() {
   document.title = 'Coffe Delivery - Checkout'
@@ -51,7 +52,7 @@ export function Checkout() {
           </div>
           <div className="payment">
             <header>
-              <span className="icon">
+              <span className="icon-payment">
                 <CurrencyDollar />
               </span>
               <div>
@@ -65,19 +66,19 @@ export function Checkout() {
 
             <div className="payment-method">
               <div>
-                <span className="icon">
+                <span className="icon-payment">
                   <CreditCard />
                 </span>
                 CARTÃO DE CRÉDITO
               </div>
               <div>
-                <span className="icon">
+                <span className="icon-payment">
                   <Bank />
                 </span>
                 CARTÃO DE DÉBITO
               </div>
               <div>
-                <span className="icon">
+                <span className="icon-payment">
                   <Money />
                 </span>
                 DINHEIRO
@@ -86,28 +87,14 @@ export function Checkout() {
           </div>
         </div>
 
-        <div>
+        <ResultContainer>
           <h1>Cafés selcionados</h1>
           <div className="confirm-order">
-            <div>
-              <img src="" alt="" />
-              <div>
-                <h1>Expresso Tradicional </h1>
-              </div>
-              <span>R$ 9,90</span>
-              <hr />
-            </div>
+            <ProductCheckout />
 
-            <div>
-              <img src="" alt="" />
-              <div>
-                <h1>Expresso Tradicional </h1>
-              </div>
-              <span>R$ 9,90</span>
-              <hr />
-            </div>
+            <ProductCheckout />
 
-            <div className="result">
+            <Details>
               <ul>
                 <li>
                   <p>Total de itens</p>
@@ -117,16 +104,16 @@ export function Checkout() {
                   <p>Entrega</p>
                   <span>R$ 3,50</span>
                 </li>
-                <li>
+                <li className="total">
                   <p>Total</p>
                   <span>R$ 23,30</span>
                 </li>
               </ul>
-            </div>
+            </Details>
 
             <button>CONFIRMAR PEDIDO</button>
           </div>
-        </div>
+        </ResultContainer>
       </form>
     </CheckoutContainer>
   )
