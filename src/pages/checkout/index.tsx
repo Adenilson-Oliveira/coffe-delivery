@@ -7,6 +7,7 @@ import {
   Money,
 } from 'phosphor-react'
 import { ProductCheckout } from './components/ProductCheckout'
+import { Link } from 'react-router-dom'
 
 export function Checkout() {
   document.title = 'Coffe Delivery - Checkout'
@@ -111,7 +112,9 @@ export function Checkout() {
               </ul>
             </Details>
 
-            <button>CONFIRMAR PEDIDO</button>
+            <Link to="/success">
+              <button>CONFIRMAR PEDIDO</button>
+            </Link>
           </div>
         </ResultContainer>
       </form>

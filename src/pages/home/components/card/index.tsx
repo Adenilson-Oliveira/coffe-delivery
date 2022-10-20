@@ -1,5 +1,6 @@
 import { ShoppingCart } from 'phosphor-react'
 import { useContext } from 'react'
+import { Link } from 'react-router-dom'
 import { Counter } from '../../../../components/counter'
 import { CoffeContext } from '../../../../contexts/CoffeContext'
 import { CardContainer } from './styles'
@@ -85,9 +86,11 @@ export function Card({ imgUrl, name, description, price, qtd, id }: CardProps) {
           qtd={qtd}
         />
 
-        <button type="submit">
-          <ShoppingCart weight="fill" />
-        </button>
+        <Link to="/checkout">
+          <button>
+            <ShoppingCart weight="fill" />
+          </button>
+        </Link>
       </div>
     </CardContainer>
   )
