@@ -43,9 +43,10 @@ export const CardContainer = styled.div`
   .input-qtd {
     padding: 0 1rem;
     display: flex;
-    gap: 1rem;
+    gap: 0.8rem;
     padding-right: 1rem;
     align-items: center;
+    justify-content: center;
     height: 38px;
     margin-bottom: 1rem;
 

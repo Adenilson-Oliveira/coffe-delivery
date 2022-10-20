@@ -2,24 +2,38 @@ import { ShoppingCart } from 'phosphor-react'
 import { Counter } from '../../../../components/counter'
 import { CardContainer } from './styles'
 
-export function Card() {
+interface CardProps {
+  imgUrl: string
+  name: string
+  description: string
+  price: number
+  qtd: number
+}
+
+export function Card({ imgUrl, name, description, price, qtd }: CardProps) {
+  const priceStr = price.toString()
+  let priceFinal = ''
+  if (priceStr.length - (priceStr.indexOf('.') + 1) === 1) {
+    priceFinal = priceStr.replace('.', ',') + '0'
+  }
+  if (priceStr.length === 1) {
+    priceFinal = `${priceStr},00`
+  }
+
   return (
     <CardContainer>
-      <img
-        src="src/assets/images/copos_de_cafe/expresso-tradicional.svg"
-        alt=""
-      />
+      <img src={imgUrl} alt="" />
       <div className="features">
         <span>tradicional</span>
       </div>
 
-      <h2>Expresso</h2>
+      <h2>{name}</h2>
 
-      <p>O tradicional café feito com água quente e grãos moídos</p>
+      <p>{description}</p>
 
       <div className="input-qtd">
         <div className="price">
-          R$ <span>9,90</span>
+          R$ <span>{priceFinal}</span>
         </div>
         {/* <div className="qtd">
           <span className="minus">-</span>
