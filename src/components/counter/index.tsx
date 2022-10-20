@@ -1,11 +1,22 @@
 import { CounterContainer } from './styles'
 
-export function Counter() {
+interface CounterProps {
+  qtd: number
+
+  onClickPlus: () => void
+  onClickMinus: () => void
+}
+
+export function Counter({ qtd, onClickPlus, onClickMinus }: CounterProps) {
   return (
     <CounterContainer className="counter">
-      <span className="minus">-</span>
-      <span className="num">0</span>
-      <span className="plus">+</span>
+      <span className="minus" onClick={onClickMinus}>
+        -
+      </span>
+      <span className="num">{qtd}</span>
+      <span className="plus" onClick={onClickPlus}>
+        +
+      </span>
     </CounterContainer>
   )
 }
