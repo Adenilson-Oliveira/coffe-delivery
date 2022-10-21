@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useState } from 'react'
 
-type coffe = {
+export type coffe = {
   id: number
   srcImg: string
   name: string
@@ -12,6 +12,10 @@ type coffe = {
 interface CoffeContextType {
   coffe: coffe[]
   setCoffe: (a: any) => any
+  user: any
+  setUser: (a: any) => any
+  cart: coffe[]
+  setCart: (a: any) => any
 }
 
 export const CoffeContext = createContext({} as CoffeContextType)
@@ -145,9 +149,13 @@ export function CoffeContextProvider({ children }: CoffeContextProviderProps) {
       qtd: 0,
     },
   ])
+  const [user, setUser] = useState({})
+  const [cart, setCart] = useState([])
 
   return (
-    <CoffeContext.Provider value={{ coffe, setCoffe }}>
+    <CoffeContext.Provider
+      value={{ coffe, user, cart, setCoffe, setUser, setCart }}
+    >
       {children}
     </CoffeContext.Provider>
   )

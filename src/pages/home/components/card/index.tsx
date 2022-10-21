@@ -2,7 +2,7 @@ import { ShoppingCart } from 'phosphor-react'
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Counter } from '../../../../components/counter'
-import { CoffeContext } from '../../../../contexts/CoffeContext'
+import { coffe, CoffeContext } from '../../../../contexts/CoffeContext'
 import { CardContainer } from './styles'
 
 interface CardProps {
@@ -15,7 +15,11 @@ interface CardProps {
 }
 
 export function Card({ imgUrl, name, description, price, qtd, id }: CardProps) {
-  const { coffe, setCoffe } = useContext(CoffeContext)
+  const { setCoffe } = useContext(CoffeContext)
+
+  // useEffect(() => {
+  //   console.log('=> ', coffe[0])
+  // }, [coffe])
 
   const priceStr = price.toString()
   let priceFinal = ''
@@ -26,38 +30,31 @@ export function Card({ imgUrl, name, description, price, qtd, id }: CardProps) {
     priceFinal = `${priceStr},00`
   }
 
+  // erro ao acrescentar mais de dois cafes do mesmo
   function handleClickPlus() {
-    const currentCoffe = coffe.find((cafe) => cafe.id === id)
-    if (currentCoffe) {
-      currentCoffe.qtd += 1
-    }
-
-    setCoffe((state: any) => {
-      return state.map((cafe: any) => {
+    setCoffe((state: coffe[]) => {
+      return state.map((cafe: coffe) => {
         if (cafe.id === id) {
-          return currentCoffe
+          return { ...cafe, qtd: cafe.qtd + 1 }
         } else {
           return cafe
         }
       })
     })
+    // console.log(coffe[0])
   }
 
   function handleClickMinus() {
-    const currentCoffe = coffe.find((cafe) => cafe.id === id)
-    if (currentCoffe && currentCoffe.qtd > 0) {
-      currentCoffe.qtd -= 1
-    }
-
-    setCoffe((state: any) => {
-      return state.map((cafe: any) => {
+    setCoffe((state: coffe[]) => {
+      return state.map((cafe: coffe) => {
         if (cafe.id === id) {
-          return currentCoffe
+          return { ...cafe, qtd: cafe.qtd - 1 }
         } else {
           return cafe
         }
       })
     })
+    // console.log(coffe[0])
   }
 
   return (

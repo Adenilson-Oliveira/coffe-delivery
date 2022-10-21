@@ -1,4 +1,4 @@
-import { CheckoutContainer, Details, ResultContainer } from './styles'
+import { CheckoutContainer, Details, ResultContainer } from './/styles'
 import {
   Bank,
   CreditCard,
@@ -8,9 +8,28 @@ import {
 } from 'phosphor-react'
 import { ProductCheckout } from './components/ProductCheckout'
 import { Link } from 'react-router-dom'
+import { useContext, useState } from 'react'
+import { coffe, CoffeContext } from '../../contexts/CoffeContext'
+
+// para evitar uma api sem nescessida, irei simular um valor para a entrega
 
 export function Checkout() {
-  document.title = 'Coffe Delivery - Checkout'
+  const { coffe } = useContext(CoffeContext)
+  const [cart, setCart] = useState(coffe.filter((cafe: coffe) => cafe.qtd > 0))
+
+  const totalDosItens = cart.reduce(
+    (prev, curr) => prev + curr.price * curr.qtd,
+    0,
+  )
+  const totalDosItensStr = totalDosItens.toFixed(2).replace('.', ',')
+
+  const entrega = cart.length >= 1 ? 3.5 : 0
+  const entregaStr = entrega.toFixed(2).replace('.', ',')
+
+  const totalStr = (totalDosItens + entrega).toFixed(2).replace('.', ',')
+  // console.log(totalDosItensStr)
+  // console.log(cart.length)
+
   return (
     <CheckoutContainer>
       <form>
@@ -91,23 +110,34 @@ export function Checkout() {
         <ResultContainer>
           <h1>Cafés selcionados</h1>
           <div className="confirm-order">
-            <ProductCheckout />
-
-            <ProductCheckout />
+            {cart.map((cafe: coffe) => {
+              return (
+                <ProductCheckout
+                  key={cafe.id}
+                  // name={cafe.name}
+                  // qtd={cafe.qtd}
+                  // src={cafe.srcImg}
+                  // price={cafe.price}
+                  // id={cafe.id}
+                  props={cafe}
+                  setCart={setCart}
+                />
+              )
+            })}
 
             <Details>
               <ul>
                 <li>
-                  <p>Total de itens</p>
-                  <span>R$ 19,80</span>
+                  <p>Total dos itens</p>
+                  <span>R$ {totalDosItensStr}</span>
                 </li>
                 <li>
                   <p>Entrega</p>
-                  <span>R$ 3,50</span>
+                  <span>R$ {entregaStr}</span>
                 </li>
                 <li className="total">
                   <p>Total</p>
-                  <span>R$ 23,30</span>
+                  <span>R$ {totalStr}</span>
                 </li>
               </ul>
             </Details>

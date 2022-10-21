@@ -7,7 +7,7 @@ import { CoffeContext } from '../../contexts/CoffeContext'
 
 export function Home() {
   const { coffe } = useContext(CoffeContext)
-  console.log(coffe)
+  // console.log(coffe)
 
   return (
     <HomeContainer>
