@@ -47,7 +47,7 @@ export function Card({ imgUrl, name, description, price, qtd, id }: CardProps) {
   function handleClickMinus() {
     setCoffe((state: coffe[]) => {
       return state.map((cafe: coffe) => {
-        if (cafe.id === id) {
+        if (cafe.id === id && cafe.qtd > 0) {
           return { ...cafe, qtd: cafe.qtd - 1 }
         } else {
           return cafe
