@@ -1,4 +1,13 @@
-import { CheckoutContainer, Details, ResultContainer } from './/styles'
+import { useContext, useState } from 'react'
+import { Link } from 'react-router-dom'
+import * as zod from 'zod'
+import { useForm, useFormContext } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+
+import { ProductCheckout } from './components/ProductCheckout'
+import { coffe, CoffeContext } from '../../contexts/CoffeContext'
+
+import { CheckoutContainer, Details, ResultContainer } from './styles'
 import {
   Bank,
   CreditCard,
@@ -6,16 +15,39 @@ import {
   MapPinLine,
   Money,
 } from 'phosphor-react'
-import { ProductCheckout } from './components/ProductCheckout'
-import { Link } from 'react-router-dom'
-import { useContext, useState } from 'react'
-import { coffe, CoffeContext } from '../../contexts/CoffeContext'
 
-// para evitar uma api sem nescessida, irei simular um valor para a entrega
+const userAddressFormValidationSchema = zod.object({
+  cep: zod
+    .string()
+    .min(8, 'O cep deve possuir um mínimo de 8 digitos')
+    .max(10, 'O cep não pode ultrapassar 10 digitos'),
+  rua: zod.string().min(1),
+  numero: zod.number().min(1),
+  complemento: zod.string().min(1).optional(),
+  bairro: zod.string().min(1),
+  cidade: zod.number().min(1),
+  uf: zod.string().min(1),
+})
 
 export function Checkout() {
   const { coffe } = useContext(CoffeContext)
   const [cart, setCart] = useState(coffe.filter((cafe: coffe) => cafe.qtd > 0))
+
+  const getUserAddress = useForm({
+    resolver: zodResolver(userAddressFormValidationSchema),
+    defaultValues: {
+      cep: '',
+      rua: '',
+      numero: 0,
+      complemento: '',
+      bairro: '',
+      cidade: '',
+      uf: '',
+    },
+  })
+
+  // , watch, reset
+  const { handleSubmit } = getUserAddress
 
   const totalDosItens = cart.reduce(
     (prev, curr) => prev + curr.price * curr.qtd,
@@ -30,9 +62,15 @@ export function Checkout() {
   // console.log(totalDosItensStr)
   // console.log(cart.length)
 
+  function handleGetUserAddress(data: any) {
+    console.log(data)
+  }
+
+  const { register } = useFormContext()
+
   return (
     <CheckoutContainer>
-      <form>
+      <form onSubmit={handleSubmit(handleGetUserAddress)}>
         <div>
           <h1>Complete seu pedido</h1>
           <div className="input-address">
@@ -47,27 +85,51 @@ export function Checkout() {
             </header>
 
             <div className="inputs">
-              <input type="text" className="cep input" placeholder="CEP" />
-              <input type="text" className="rua input" placeholder="Rua" />
+              <input
+                type="text"
+                className="cep input"
+                placeholder="CEP"
+                {...register('cep')}
+              />
+              <input
+                type="text"
+                className="rua input"
+                placeholder="Rua"
+                {...register('rua')}
+              />
 
-              <input type="number" className="num input" placeholder="Número" />
+              <input
+                type="number"
+                className="num input"
+                placeholder="Número"
+                {...register('numero')}
+              />
               <input
                 type="text"
                 className="comp input"
                 placeholder="Complemento  (opcional)"
+                {...register('complemento')}
               />
 
               <input
                 type="text"
                 className="bairro input"
                 placeholder="Bairro"
+                {...register('bairro')}
               />
+
               <input
                 type="text"
                 className="cidade input"
                 placeholder="Cidade"
+                {...register('cidade')}
               />
-              <input type="text" className="uf input" placeholder="UF" />
+              <input
+                type="text"
+                className="uf input"
+                placeholder="UF"
+                {...register('uf')}
+              />
             </div>
           </div>
           <div className="payment">
