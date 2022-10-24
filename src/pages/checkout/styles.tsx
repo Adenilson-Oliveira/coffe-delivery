@@ -110,17 +110,36 @@ export const CheckoutContainer = styled.div`
     gap: 1rem;
     margin-top: 2rem;
 
-    div {
-      /* border: 1px solid ${(props) => props.theme['purple-dark']}; */
-      padding: 1rem;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      background-color: ${(props) => props.theme['base-button']};
+    input {
+      display: none;
+    }
 
-      &:hover {
-        background-color: ${(props) => props.theme['base-hover']};
+    div {
+      border-radius: 6px;
+
+      label {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        border-radius: 6px;
+        background-color: ${(props) => props.theme['base-button']};
+        color: ${(props) => props.theme['base-text']};
+        cursor: pointer;
+
+        &:hover {
+          background-color: ${(props) => props.theme['base-hover']};
+        }
+      }
+
+      input[type='radio']:checked {
+        border: 1px solid ${(props) => props.theme['base-button']};
+        /* transition: 0.8ms; */
+      }
+
+      input[type='radio']:checked + label {
+        border: 1px solid ${(props) => props.theme.purple};
+        background-color: ${(props) => props.theme['purple-light']};
+        /* display: none; */
       }
     }
 

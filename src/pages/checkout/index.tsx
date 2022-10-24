@@ -1,7 +1,6 @@
 import { useContext, useState } from 'react'
-import { Link } from 'react-router-dom'
 import * as zod from 'zod'
-import { useForm, useFormContext } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { ProductCheckout } from './components/ProductCheckout'
@@ -15,39 +14,53 @@ import {
   MapPinLine,
   Money,
 } from 'phosphor-react'
+import { RequestContext } from '../../contexts/RequestsContext'
 
-const userAddressFormValidationSchema = zod.object({
+const newUserAddressFormValidationSchema = zod.object({
   cep: zod
     .string()
     .min(8, 'O cep deve possuir um mínimo de 8 digitos')
     .max(10, 'O cep não pode ultrapassar 10 digitos'),
   rua: zod.string().min(1),
   numero: zod.number().min(1),
-  complemento: zod.string().min(1).optional(),
+  complemento: zod.string().optional(),
   bairro: zod.string().min(1),
-  cidade: zod.number().min(1),
-  uf: zod.string().min(1),
+  cidade: zod.string().min(1),
+  uf: zod.string().min(2, 'O UF deve possuir no mínimo 2 letras'),
+  'mean-of-payment': zod.string(),
 })
 
 export function Checkout() {
   const { coffe } = useContext(CoffeContext)
   const [cart, setCart] = useState(coffe.filter((cafe: coffe) => cafe.qtd > 0))
+  const { request, setRequest } = useContext(RequestContext)
 
-  const getUserAddress = useForm({
-    resolver: zodResolver(userAddressFormValidationSchema),
-    defaultValues: {
-      cep: '',
-      rua: '',
-      numero: 0,
-      complemento: '',
-      bairro: '',
-      cidade: '',
-      uf: '',
-    },
+  console.log(request)
+
+  // const getUserAddress = useForm({
+  //   resolver: zodResolver(userAddressFormValidationSchema),
+  //   defaultValues: {
+  //     cep: '',
+  //     rua: '',
+  //     numero: 0,
+  //     complemento: '',
+  //     bairro: '',
+  //     cidade: '',
+  //     uf: '',
+  //   },
+  // })
+
+  const {
+    register,
+    handleSubmit,
+    /* watch, */
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(newUserAddressFormValidationSchema),
   })
 
-  // , watch, reset
-  const { handleSubmit } = getUserAddress
+  // // , watch, reset
+  // const { handleSubmit } = getUserAddress
 
   const totalDosItens = cart.reduce(
     (prev, curr) => prev + curr.price * curr.qtd,
@@ -62,11 +75,25 @@ export function Checkout() {
   // console.log(totalDosItensStr)
   // console.log(cart.length)
 
+  const [erroCart, setErroCart] = useState('')
+
   function handleGetUserAddress(data: any) {
     console.log(data)
+
+    // tratar os dados para o context
+    if (cart.length > 0) {
+      setRequest({
+        cafesComprados: cart,
+        user: data,
+      })
+    } else {
+      setErroCart('selecione os itens para realizar o pedido')
+    }
+
+    // redirect for page success
   }
 
-  const { register } = useFormContext()
+  console.log(errors)
 
   return (
     <CheckoutContainer>
@@ -85,13 +112,18 @@ export function Checkout() {
             </header>
 
             <div className="inputs">
+              {errors && errors.cep && <p>{`${errors.cep.message}`}</p>}
+              {errors && errors.uf && <p>{`${errors.uf.message}`}</p>}
+
               <input
+                required
                 type="text"
                 className="cep input"
                 placeholder="CEP"
                 {...register('cep')}
               />
               <input
+                required
                 type="text"
                 className="rua input"
                 placeholder="Rua"
@@ -99,10 +131,11 @@ export function Checkout() {
               />
 
               <input
+                required
                 type="number"
                 className="num input"
                 placeholder="Número"
-                {...register('numero')}
+                {...register('numero', { valueAsNumber: true })}
               />
               <input
                 type="text"
@@ -112,6 +145,7 @@ export function Checkout() {
               />
 
               <input
+                required
                 type="text"
                 className="bairro input"
                 placeholder="Bairro"
@@ -119,12 +153,15 @@ export function Checkout() {
               />
 
               <input
+                required
                 type="text"
                 className="cidade input"
                 placeholder="Cidade"
                 {...register('cidade')}
               />
+
               <input
+                required
                 type="text"
                 className="uf input"
                 placeholder="UF"
@@ -146,24 +183,55 @@ export function Checkout() {
               </div>
             </header>
 
+            {errors['mean-of-payment'] && (
+              <p>{`${errors['mean-of-payment'].message}`}</p>
+            )}
             <div className="payment-method">
               <div>
-                <span className="icon-payment">
-                  <CreditCard />
-                </span>
-                CARTÃO DE CRÉDITO
+                <input
+                  type="radio"
+                  id="credit-card"
+                  value="credit-card"
+                  {...register('mean-of-payment')}
+                />
+                <label htmlFor="credit-card">
+                  <span className="icon-payment">
+                    <CreditCard />
+                  </span>
+                  CARTÃO DE CRÉDITO
+                </label>
               </div>
+
               <div>
-                <span className="icon-payment">
-                  <Bank />
-                </span>
-                CARTÃO DE DÉBITO
+                <input
+                  type="radio"
+                  id="debit-card"
+                  value="debit-card"
+                  {...register('mean-of-payment')}
+                />
+                <label htmlFor="debit-card">
+                  {/* <div> */}
+                  <span className="icon-payment">
+                    <Bank />
+                  </span>
+                  CARTÃO DE DÉBITO
+                  {/* </div> */}
+                </label>
               </div>
+
               <div>
-                <span className="icon-payment">
-                  <Money />
-                </span>
-                DINHEIRO
+                <input
+                  type="radio"
+                  id="money"
+                  value="money"
+                  {...register('mean-of-payment')}
+                />
+                <label htmlFor="money">
+                  <span className="icon-payment">
+                    <Money />
+                  </span>
+                  DINHEIRO
+                </label>
               </div>
             </div>
           </div>
@@ -171,7 +239,9 @@ export function Checkout() {
 
         <ResultContainer>
           <h1>Cafés selcionados</h1>
+
           <div className="confirm-order">
+            {erroCart && <p>{`${erroCart}`}</p>}
             {cart.map((cafe: coffe) => {
               return (
                 <ProductCheckout
@@ -204,9 +274,9 @@ export function Checkout() {
               </ul>
             </Details>
 
-            <Link to="/success">
-              <button>CONFIRMAR PEDIDO</button>
-            </Link>
+            {/* <Link to="/success"> */}
+            <button type="submit">CONFIRMAR PEDIDO</button>
+            {/* </Link> */}
           </div>
         </ResultContainer>
       </form>
