@@ -88,4 +88,8 @@ export const SuccessContainer = styled.main`
     background-color: ${(props) => props.theme['yellow-dark']};
     color: ${(props) => props.theme.background};
   }
+
+  .bold {
+    font-weight: bold;
+  }
 `

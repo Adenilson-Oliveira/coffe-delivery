@@ -1,24 +1,20 @@
 import { createContext, ReactNode, useState } from 'react'
-import { coffe } from './CoffeContext'
+// import { coffe } from './CoffeContext'
 
-type user = {
-  cep: string
-  rua: string
-  numero: number
-  complemento: string | null
-  bairro: string
-  cidade: string
-  uf: string
-}
-
-export type request = {
-  cafesComprados: coffe[]
-  user: user
-}
+// type user = {
+//   cep: string
+//   rua: string
+//   numero: number
+//   complemento?: string
+//   bairro: string
+//   cidade: string
+//   uf: string
+//   cafesComprados?: coffe[]
+// }
 
 interface RequestContextType {
   request: any
-  setRequest: (req: request) => void
+  setRequest: (req: any) => void
 }
 
 export const RequestContext = createContext({} as RequestContextType)

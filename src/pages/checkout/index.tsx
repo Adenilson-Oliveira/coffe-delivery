@@ -15,6 +15,7 @@ import {
   Money,
 } from 'phosphor-react'
 import { RequestContext } from '../../contexts/RequestsContext'
+import { useNavigate } from 'react-router-dom'
 
 const newUserAddressFormValidationSchema = zod.object({
   cep: zod
@@ -34,6 +35,7 @@ export function Checkout() {
   const { coffe } = useContext(CoffeContext)
   const [cart, setCart] = useState(coffe.filter((cafe: coffe) => cafe.qtd > 0))
   const { request, setRequest } = useContext(RequestContext)
+  const navigate = useNavigate()
 
   console.log(request)
 
@@ -80,15 +82,35 @@ export function Checkout() {
   function handleGetUserAddress(data: any) {
     console.log(data)
 
+    function nomearMeioDePagamento() {
+      switch (data['mean-of-payment']) {
+        case 'credit-card':
+          return 'Cartão de crédito'
+        case 'debit-card':
+          return 'Catão de débito'
+        case 'money':
+          return 'Dinheiro'
+        default:
+          return 'Verifique o meio de pagamento.'
+      }
+    }
+
+    const meioDePagamento = nomearMeioDePagamento()
+
     // tratar os dados para o context
     if (cart.length > 0) {
       setRequest({
-        cafesComprados: cart,
-        user: data,
+        user: {
+          ...data,
+          cafesComprados: cart,
+          meioDePagamento,
+        },
       })
     } else {
       setErroCart('selecione os itens para realizar o pedido')
     }
+    navigate('/success')
+    // useNavigate('/success')
 
     // redirect for page success
   }
